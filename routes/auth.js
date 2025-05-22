@@ -1,3 +1,6 @@
+import { Router } from 'express';
+import { v4 as uuid } from 'uuid';
+
 // GET - Logga ut inloggad användare
 // URL: /api/auth/logout
 
