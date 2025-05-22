@@ -10,13 +10,18 @@ export async function registerUser(user) {
 	}
 }
 
-export function getUser(username) {
+export async function getUser(username) {
 	try {
-		const user = User.findOne({ username: username });
+		const user = await User.findOne({ username: username });
 
-		if (user) return user;
-		else throw new Error('No user found');
+		if (user) {
+			return user;
+		} else {
+			throw new Error('No user found');
+		}
 	} catch (error) {
+		console.log('I reached error catch!');
+
 		console.log(error.message);
 		return null;
 	}

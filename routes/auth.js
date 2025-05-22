@@ -5,15 +5,22 @@ import { getUser, registerUser } from '../services/users.js';
 
 const router = Router();
 
-router.use(authorizeKey);
+// router.use(authorizeKey);
 // GET - Logga ut inloggad användare
 // URL: /api/auth/logout
-router.get('/logout', async (req, res) => {
-	global.user = null;
-	res.json({
-		success: true,
-		message: 'User logged out successfully',
-	});
+router.get('/logout', async (req, res, next) => {
+	if (global.user) {
+		global.user = null;
+		res.json({
+			success: true,
+			message: 'User logged out successfully',
+		});
+	} else {
+		next({
+			status: 400,
+			message: 'No user to logout',
+		});
+	}
 });
 
 // POST - Tar emot data i requestets body, jämför mot databasen och returnerar status baserat på utfall.
@@ -22,33 +29,41 @@ router.get('/logout', async (req, res) => {
 router.post('/login', async (req, res, next) => {
 	const { username, password } = req.body;
 
-	if (username && password) {
-		const user = await getUser(username);
+	if (!global.user) {
+		if (username && password) {
+			const user = await getUser(username);
+			console.log(user);
 
-		if (user) {
-			if (user.password === password) {
-				global.user = user;
+			if (user) {
+				if (user.password === password) {
+					global.user = user;
 
-				res.json({
-					success: true,
-					message: `User ${username} logged in successfully`,
-				});
+					res.json({
+						success: true,
+						message: `User ${username} logged in successfully`,
+					});
+				} else {
+					next({
+						status: 400,
+						message: 'Username or password are incorrect',
+					});
+				}
 			} else {
 				next({
 					status: 400,
-					message: 'Username or password are incorrect',
+					message: 'No user found',
 				});
 			}
 		} else {
 			next({
 				status: 400,
-				message: 'No user found',
+				message: 'Both username and password are required',
 			});
 		}
 	} else {
 		next({
 			status: 400,
-			message: 'Both username and password are required',
+			message: `User ${global.user.username} is already logged`,
 		});
 	}
 });
@@ -74,7 +89,7 @@ router.post('/register', async (req, res, next) => {
 		} else {
 			next({
 				status: 400,
-				message: 'User could not be created.',
+				message: `Username ${username} already exist and could not be created.`,
 			});
 		}
 	} else {
@@ -84,3 +99,5 @@ router.post('/register', async (req, res, next) => {
 		});
 	}
 });
+
+export default router;
