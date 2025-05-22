@@ -4,6 +4,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import keysRouter from './routes/keys.js';
 import authRouter from './routes/auth.js';
+import todosRouter from './routes/todos.js';
 import errorHandler from './middlewares/errorHandler.js';
 
 // Config
@@ -20,6 +21,7 @@ app.use(express.json());
 // Routes
 app.use('/api/keys', keysRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/todos', todosRouter);
 
 database.on('error', (error) => console.log(error));
 database.once('connected', () => {

@@ -1,11 +1,9 @@
 import { Router } from 'express';
 import { v4 as uuid } from 'uuid';
-import { authorizeKey } from '../middlewares/authorizeKey.js';
 import { getUser, registerUser } from '../services/users.js';
 
 const router = Router();
 
-// router.use(authorizeKey);
 // GET - Logga ut inloggad användare
 // URL: /api/auth/logout
 router.get('/logout', async (req, res, next) => {
