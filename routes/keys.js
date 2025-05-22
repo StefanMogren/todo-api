@@ -1,0 +1,1 @@
+// GET - returnera slumpmässig nyckel
