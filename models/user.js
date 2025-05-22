@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-const todoSchema = new Schema({
+const userSchema = new Schema({
 	username: {
 		type: String,
 		required: true,
@@ -18,3 +18,7 @@ const todoSchema = new Schema({
 		unique: true,
 	},
 });
+
+const User = mongoose.model('User', userSchema);
+
+export default User;
