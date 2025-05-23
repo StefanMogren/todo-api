@@ -30,7 +30,6 @@ router.post('/login', async (req, res, next) => {
 	if (!global.user) {
 		if (username && password) {
 			const user = await getUser(username);
-			console.log(user);
 
 			if (user) {
 				if (user.password === password) {

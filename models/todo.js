@@ -16,6 +16,10 @@ const todoSchema = new Schema(
 		userId: {
 			type: String,
 			required: true,
+		},
+		todoId: {
+			type: String,
+			required: true,
 			unique: true,
 		},
 	},
